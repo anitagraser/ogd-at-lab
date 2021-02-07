@@ -1,6 +1,7 @@
 from os.path import exists
 from urllib.request import urlretrieve
 import geopandas as gpd
+import pandas as pd
 
 def gdf_from_wfs(layer):
     """
@@ -48,3 +49,43 @@ def get_elevation(point):
             elevationall = line.split(' ', 1 )[1]
             return int(elevationall)
         
+def get_weather_df():
+    """
+    Get data from https://go.gv.at/l9lumesakt
+    """
+    file = 'lumesakt.csv'
+    url = 'https://go.gv.at/l9lumesakt'
+    urlretrieve(url, file)
+    df = pd.read_csv(file)
+    return df
+
+def get_heatvulnerabilityindex_gdf():
+    """
+    Get data from https://go.gv.at/l9lumesakt
+    """
+    file = 'heatvulnerabilityindex.csv'
+    url = 'https://www.wien.gv.at/gogv/l9ogdaverageurbanheatvulnerabilityindex'
+    if not exists(file):
+        urlretrieve(url, file)
+    df = pd.read_csv(file, sep=';', encoding='latin1')
+    df['AVG_UHVI_A'] = df['AVG_UHVI_A'].str.replace(',', '.').astype(float)
+    df['AVG_UHVI_O'] = df['AVG_UHVI_O'].str.replace(',', '.').astype(float)
+    df['AVG_UHVI_Y'] = df['AVG_UHVI_Y'].str.replace(',', '.').astype(float)
+    df.set_index('SUB_DISTRICT_CODE_VIE', inplace=True)
+    districts = gdf_from_wfs('ZAEHLBEZIRKOGD')
+    districts['SUB_DISTRICT_CODE_VIE'] = districts['ZBEZ'].astype(int) + 90000
+    districts.set_index('SUB_DISTRICT_CODE_VIE', inplace=True)
+    gdf = gpd.GeoDataFrame(pd.DataFrame(districts).join(df))
+    return gdf
+
+def get_zaehlsprengel_gdf(year=2020):
+    """
+    Get Zählsprengel districts from Statistik Austria
+    """
+    file = f'OGDEXT_ZSP_1_STATISTIK_AUSTRIA_{year}0101.zip'
+    url = f'http://data.statistik.gv.at/data/OGDEXT_ZSP_1_STATISTIK_AUSTRIA_{year}0101.zip'
+    if not exists(file):
+        urlretrieve(url, file)
+    gdf = gpd.read_file(f'zip://{file}')
+    return gdf
+                             
