@@ -5,7 +5,7 @@ import pandas as pd
 
 def gdf_from_wfs(layer):
     """
-    Get GeoPandas GeoDataFrame from data.wien.gv.at WFS service based on layer name
+    Get geopandas.GeoDataFrame from data.wien.gv.at WFS service based on layer name
     
     Parameters
     ----------
@@ -59,9 +59,10 @@ def get_weather_df():
     df = pd.read_csv(file)
     return df
 
-def get_heatvulnerabilityindex_gdf():
+def get_heatvulnerabilityindex_df():
     """
-    Get data from https://go.gv.at/l9lumesakt
+    Get pandas.DataFrame of heat vulnerability from 
+    https://www.wien.gv.at/gogv/l9ogdaverageurbanheatvulnerabilityindex
     """
     file = 'heatvulnerabilityindex.csv'
     url = 'https://www.wien.gv.at/gogv/l9ogdaverageurbanheatvulnerabilityindex'
@@ -72,6 +73,14 @@ def get_heatvulnerabilityindex_gdf():
     df['AVG_UHVI_O'] = df['AVG_UHVI_O'].str.replace(',', '.').astype(float)
     df['AVG_UHVI_Y'] = df['AVG_UHVI_Y'].str.replace(',', '.').astype(float)
     df.set_index('SUB_DISTRICT_CODE_VIE', inplace=True)
+    return df
+
+def get_heatvulnerabilityindex_gdf():
+    """
+    Get geopandas.GeoDataFrame of heat vulnerability from 
+    https://www.wien.gv.at/gogv/l9ogdaverageurbanheatvulnerabilityindex
+    """
+    df = get_heatvulnerabilityindex_df()
     districts = gdf_from_wfs('ZAEHLBEZIRKOGD')
     districts['SUB_DISTRICT_CODE_VIE'] = districts['ZBEZ'].astype(int) + 90000
     districts.set_index('SUB_DISTRICT_CODE_VIE', inplace=True)
@@ -80,7 +89,7 @@ def get_heatvulnerabilityindex_gdf():
 
 def get_zaehlsprengel_gdf(year=2020):
     """
-    Get Zählsprengel districts from Statistik Austria
+    Get geopandas.GeoDataFrame of Zählsprengel districts from Statistik Austria
     """
     file = f'OGDEXT_ZSP_1_STATISTIK_AUSTRIA_{year}0101.zip'
     url = f'http://data.statistik.gv.at/data/OGDEXT_ZSP_1_STATISTIK_AUSTRIA_{year}0101.zip'

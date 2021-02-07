@@ -4,7 +4,7 @@ def hvplot_with_buffer(gdf, buffer_size, *args, **kwargs):
     
     Parameters
     ----------
-    gdf : geopandas.Geodataframe
+    gdf : geopandas.GeoDataFrame
         point GeoDataFrame to plot
     buffer_size : numeric
         size of the buffer in meters (measured in EPSG:31287)
