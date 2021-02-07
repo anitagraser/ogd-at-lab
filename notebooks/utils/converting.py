@@ -8,7 +8,7 @@ def location_to_gdf(location, address=None):
     
     Parameters
     ----------
-    location : GeoPy.Location
+    location : geopy.Location
         Location info to be used as the GeoDataFrame geometry
     address : string
         Optional address string to be stored in the GeoDataFrame column 'address'

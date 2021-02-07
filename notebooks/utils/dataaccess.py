@@ -25,7 +25,7 @@ def get_elevation(point):
     
     Parameters
     ----------
-    point : Shapely Point
+    point : shapely.Point
         Point in EPSG:3857 
     """
     x = point.x
