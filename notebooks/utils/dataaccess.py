@@ -56,7 +56,10 @@ def get_airquality_df():
     file = 'lumesakt.csv'
     url = 'https://go.gv.at/l9lumesakt'
     urlretrieve(url, file)
-    df = pd.read_csv(file, sep=';', encoding='latin1')
+    df = pd.read_csv(file, sep=';', encoding='latin1', skiprows=1)
+    df.drop([0, 1], inplace=True)
+    df.rename(columns={'Unnamed: 0': 'NAME_KURZ'}, inplace=True)
+    df.set_index('NAME_KURZ', inplace=True)
     return df
 
 def get_heatvulnerabilityindex_df():
