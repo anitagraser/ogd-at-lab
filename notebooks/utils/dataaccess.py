@@ -58,6 +58,11 @@ def get_airquality_df():
     urlretrieve(url, file)
     df = pd.read_csv(file, sep=';', encoding='latin1', skiprows=1)
     df.drop([0, 1], inplace=True)
+    for col in ['LTM', 'WG', 'WR', 'RF', 'NO2', 'NOX', 'PM10', 'PM10.1', 'PM25', 'PM25.1', 'O3', 'O3.1', 'SO2', 'CO', 'CO.1']:
+        df[col] = df[col].str.replace(',', '.')
+        df[col] = df[col].str.replace('NE', '')
+        df[col] = df[col].str.replace('---', '')
+        df[col] = df[col].apply(pd.to_numeric,errors='coerce')
     df.rename(columns={'Unnamed: 0': 'NAME_KURZ'}, inplace=True)
     df.set_index('NAME_KURZ', inplace=True)
     return df
@@ -72,9 +77,8 @@ def get_heatvulnerabilityindex_df():
     if not exists(file):
         urlretrieve(url, file)
     df = pd.read_csv(file, sep=';', encoding='latin1')
-    df['AVG_UHVI_A'] = df['AVG_UHVI_A'].str.replace(',', '.').astype(float)
-    df['AVG_UHVI_O'] = df['AVG_UHVI_O'].str.replace(',', '.').astype(float)
-    df['AVG_UHVI_Y'] = df['AVG_UHVI_Y'].str.replace(',', '.').astype(float)
+    for col in ['AVG_UHVI_A', 'AVG_UHVI_O', 'AVG_UHVI_Y']:
+        df[col] = df[col].str.replace(',', '.').apply(pd.to_numeric,errors='coerce')
     df.set_index('SUB_DISTRICT_CODE_VIE', inplace=True)
     return df
 
