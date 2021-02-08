@@ -49,14 +49,14 @@ def get_elevation(point):
             elevationall = line.split(' ', 1 )[1]
             return int(elevationall)
         
-def get_weather_df():
+def get_airquality_df():
     """
     Get data from https://go.gv.at/l9lumesakt
     """
     file = 'lumesakt.csv'
     url = 'https://go.gv.at/l9lumesakt'
     urlretrieve(url, file)
-    df = pd.read_csv(file)
+    df = pd.read_csv(file, sep=';', encoding='latin1')
     return df
 
 def get_heatvulnerabilityindex_df():
