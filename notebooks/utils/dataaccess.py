@@ -51,7 +51,7 @@ def get_elevation(point):
         
 def get_airquality_df():
     """
-    Get data from https://go.gv.at/l9lumesakt
+    Get pandas.DataFrame of air quality data from https://go.gv.at/l9lumesakt
     """
     file = 'lumesakt.csv'
     url = 'https://go.gv.at/l9lumesakt'
@@ -63,20 +63,20 @@ def get_airquality_df():
         df[col] = df[col].str.replace('NE', '')
         df[col] = df[col].str.replace('---', '')
         df[col] = df[col].apply(pd.to_numeric,errors='coerce')
-    df.rename(columns={'Unnamed: 0': 'NAME_KURZ'}, inplace=True)
-    df.rename(columns={'Zeit-LTM': 'time airtemp'}, inplace=True)
-    df.rename(columns={'LTM': 'airtemp °C'}, inplace=True)
-    df.rename(columns={'Zeit-Wind': 'time wind'}, inplace=True)
-    df.rename(columns={'WG': 'windspeed kmh'}, inplace=True)
-    df.rename(columns={'WR': 'winddirection °'}, inplace=True)
-    df.rename(columns={'Zeit-RF': 'time humidity'}, inplace=True)
-    df.rename(columns={'RF': 'relhumidity %'}, inplace=True)
-    df.rename(columns={'Zeit-NO2': 'time NO2'}, inplace=True)
-    df.rename(columns={'Zeit-NOX': 'time NOX'}, inplace=True)
-    df.rename(columns={'Zeit-PM': 'time PM'}, inplace=True)
-    df.rename(columns={'Zeit-O3': 'time O3'}, inplace=True)
-    df.rename(columns={'Zeit-SO2': 'time SO2'}, inplace=True)
-    df.rename(columns={'Zeit-CO': 'time CO'}, inplace=True)
+    df.rename(columns={'Unnamed: 0': 'NAME_KURZ', 
+                       'Zeit-LTM': 'time airtemp',
+                       'LTM': 'airtemp °C',
+                       'Zeit-Wind': 'time wind',
+                       'WG': 'windspeed kmh',
+                       'WR': 'winddirection °',
+                       'Zeit-RF': 'time humidity',
+                       'RF': 'relhumidity %',
+                       'Zeit-NO2': 'time NO2',
+                       'Zeit-NOX': 'time NOX',
+                       'Zeit-PM': 'time PM',
+                       'Zeit-O3': 'time O3',
+                       'Zeit-SO2': 'time SO2',
+                       'Zeit-CO': 'time CO'}, inplace=True)
     df.set_index('NAME_KURZ', inplace=True)
     return df
 
