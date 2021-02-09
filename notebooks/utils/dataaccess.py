@@ -104,7 +104,7 @@ def get_heatvulnerabilityindex_gdf():
     districts = gdf_from_wfs('ZAEHLBEZIRKOGD')
     districts['SUB_DISTRICT_CODE_VIE'] = districts['ZBEZ'].astype(int) + 90000
     districts.set_index('SUB_DISTRICT_CODE_VIE', inplace=True)
-    gdf = gpd.GeoDataFrame(pd.DataFrame(districts).join(df))
+    gdf = districts.join(df) #gpd.GeoDataFrame(pd.DataFrame(districts).join(df))
     return gdf
 
 def get_zaehlsprengel_gdf(year=2020):
