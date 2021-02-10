@@ -117,4 +117,29 @@ def get_zaehlsprengel_gdf(year=2020):
         urlretrieve(url, file)
     gdf = gpd.read_file(f'zip://{file}')
     return gdf
-                             
+
+def get_uber_movement_gdf():
+    """
+    Get geopandas.GeoDataFrame of Uber Movement data
+    
+    Source: https://movement.uber.com/explore/vienna/travel-times
+    © 2021 Copyright Uber Technologies, Inc. Data Attributions
+    
+    Data is made available under [CC BY-NC 3.0 US](https://creativecommons.org/licenses/by-nc/3.0/us/)
+    """
+    file = 'uber_vienna_statistical_areas.zip'
+    url = 'https://github.com/anitagraser/ogd-at-lab-data/raw/main/uber/vienna_statistical_areas.zip'
+    if not exists(file):
+        urlretrieve(url, file)
+    gdf = gpd.read_file(f'zip://{file}')
+    gdf['MOVEMENT_ID'] = gdf['MOVEMENT_ID'].astype(int)
+    gdf.set_index('MOVEMENT_ID', inplace=True)
+
+    file = 'uber_vienna-statistical_areas-2020-1-All-MonthlyAggregate.zip'
+    url = 'https://github.com/anitagraser/ogd-at-lab-data/raw/main/uber/vienna-statistical_areas-2020-1-All-MonthlyAggregate.zip'
+    if not exists(file):
+        urlretrieve(url, file)
+    df = pd.read_csv(file)
+    df.set_index('dstid', inplace=True)
+
+    return gdf.join(df)

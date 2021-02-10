@@ -137,3 +137,4 @@ notebooks/WAHLSPRGR2020OGD.json
 notebooks/ZAEHLBEZIRKOGD.json
 notebooks/ZAEHLSPRGR0OGD.json
 notebooks/lumesakt.csv
+*.zip
