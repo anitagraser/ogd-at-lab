@@ -10,6 +10,7 @@ dependencies:
   - seaborn
   - pandas
   - geopandas
+  - movingpandas
   - rasterio
   - hvplot
   - bokeh
