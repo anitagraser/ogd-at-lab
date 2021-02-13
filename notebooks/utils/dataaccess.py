@@ -3,7 +3,7 @@ from urllib.request import urlretrieve
 import geopandas as gpd
 import pandas as pd
 
-def gdf_from_wfs(layer):
+def get_gdf_from_wfs(layer):
     """
     Get geopandas.GeoDataFrame from data.wien.gv.at WFS service based on layer name
     
@@ -101,10 +101,10 @@ def get_heatvulnerabilityindex_gdf():
     https://www.wien.gv.at/gogv/l9ogdaverageurbanheatvulnerabilityindex
     """
     df = get_heatvulnerabilityindex_df()
-    districts = gdf_from_wfs('ZAEHLBEZIRKOGD')
+    districts = get_gdf_from_wfs('ZAEHLBEZIRKOGD')
     districts['SUB_DISTRICT_CODE_VIE'] = districts['ZBEZ'].astype(int) + 90000
     districts.set_index('SUB_DISTRICT_CODE_VIE', inplace=True)
-    gdf = districts.join(df) #gpd.GeoDataFrame(pd.DataFrame(districts).join(df))
+    gdf = districts.join(df) 
     return gdf
 
 def get_zaehlsprengel_gdf(year=2020):
@@ -143,3 +143,17 @@ def get_uber_movement_gdf():
     df.set_index('dstid', inplace=True)
 
     return gdf.join(df)
+
+def get_osm_traces(page=0, bbox='16.18,48.09,16.61,48.32'):
+    file = 'osm_traces.gpx'
+    url = f'https://api.openstreetmap.org/api/0.6/trackpoints?bbox={bbox}&page={page}'
+    if not exists(file):
+        urlretrieve(url, file)
+    gdf = gpd.read_file(file, layer='track_points')
+    # dropping empty columns
+    gdf.drop(columns=['ele', 'course', 'speed', 'magvar', 'geoidheight', 'name', 'cmt', 'desc',
+       'src', 'url', 'urlname', 'sym', 'type', 'fix', 'sat', 'hdop', 'vdop',
+       'pdop', 'ageofdgpsdata', 'dgpsid'], inplace=True) 
+    gdf['t'] = pd.to_datetime(gdf['time'])
+    gdf.set_index('t', inplace=True)
+    return gdf
