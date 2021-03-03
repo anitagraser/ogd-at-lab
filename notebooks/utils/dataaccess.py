@@ -89,9 +89,7 @@ def get_heatvulnerabilityindex_df():
     url = 'https://www.wien.gv.at/gogv/l9ogdaverageurbanheatvulnerabilityindex'
     if not exists(file):
         urlretrieve(url, file)
-    df = pd.read_csv(file, sep=';', encoding='latin1')
-    for col in ['AVG_UHVI_A', 'AVG_UHVI_O', 'AVG_UHVI_Y']:
-        df[col] = df[col].str.replace(',', '.').apply(pd.to_numeric,errors='coerce')
+    df = pd.read_csv(file, sep=';', encoding='latin1', decimal=',')
     df.set_index('SUB_DISTRICT_CODE_VIE', inplace=True)
     return df
 
