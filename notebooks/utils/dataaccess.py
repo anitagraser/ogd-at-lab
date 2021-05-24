@@ -12,7 +12,7 @@ def get_gdf_from_wfs(layer):
     layer : string
         WFS layer name 
     """
-    file = f'{layer}.json'
+    file = f'data/{layer}.json'
     url = f"https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:{layer}&srsName=EPSG:4326&outputFormat=json"
     if not exists(file):
         urlretrieve(url, file)
@@ -38,7 +38,7 @@ def get_elevation(point):
     raster_y = y - mod_y;
     mod_x = x % 10;
     raster_x = int(x - mod_x);
-    file = f'{int(raster_y)}.txt'
+    file = f'data/{int(raster_y)}.txt'
     url = f"https://raw.githubusercontent.com/maegger/{database}/master/{int(raster_y)}.txt"
     if not exists(file):
         urlretrieve(url, file)
@@ -53,7 +53,7 @@ def get_airquality_df():
     """
     Get pandas.DataFrame of air quality data from https://go.gv.at/l9lumesakt
     """
-    file = 'lumesakt.csv'
+    file = 'data/lumesakt.csv'
     url = 'https://go.gv.at/l9lumesakt'
     urlretrieve(url, file)
     df = pd.read_csv(file, sep=';', encoding='latin1', skiprows=1)
@@ -85,7 +85,7 @@ def get_heatvulnerabilityindex_df():
     Get pandas.DataFrame of heat vulnerability from 
     https://www.wien.gv.at/gogv/l9ogdaverageurbanheatvulnerabilityindex
     """
-    file = 'heatvulnerabilityindex.csv'
+    file = 'data/heatvulnerabilityindex.csv'
     url = 'https://www.wien.gv.at/gogv/l9ogdaverageurbanheatvulnerabilityindex'
     if not exists(file):
         urlretrieve(url, file)
@@ -109,7 +109,7 @@ def get_zaehlsprengel_gdf(year=2020):
     """
     Get geopandas.GeoDataFrame of Zählsprengel districts from Statistik Austria
     """
-    file = f'OGDEXT_ZSP_1_STATISTIK_AUSTRIA_{year}0101.zip'
+    file = f'data/OGDEXT_ZSP_1_STATISTIK_AUSTRIA_{year}0101.zip'
     url = f'http://data.statistik.gv.at/data/OGDEXT_ZSP_1_STATISTIK_AUSTRIA_{year}0101.zip'
     if not exists(file):
         urlretrieve(url, file)
@@ -125,7 +125,7 @@ def get_uber_movement_gdf():
     
     Data is made available under [CC BY-NC 3.0 US](https://creativecommons.org/licenses/by-nc/3.0/us/)
     """
-    file = 'uber_vienna_statistical_areas.zip'
+    file = 'data/uber_vienna_statistical_areas.zip'
     url = 'https://github.com/anitagraser/ogd-at-lab-data/raw/main/uber/vienna_statistical_areas.zip'
     if not exists(file):
         urlretrieve(url, file)
@@ -143,7 +143,7 @@ def get_uber_movement_gdf():
     return gdf.join(df)
 
 def get_osm_traces(page=0, bbox='16.18,48.09,16.61,48.32'):
-    file = 'osm_traces.gpx'
+    file = 'data/osm_traces.gpx'
     url = f'https://api.openstreetmap.org/api/0.6/trackpoints?bbox={bbox}&page={page}'
     if not exists(file):
         urlretrieve(url, file)
