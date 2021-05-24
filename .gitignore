@@ -139,3 +139,5 @@ notebooks/ZAEHLSPRGR0OGD.json
 notebooks/lumesakt.csv
 *.zip
 *.gpx
+
+/notebooks/data
