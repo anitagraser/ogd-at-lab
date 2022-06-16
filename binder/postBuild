@@ -1,4 +1,2 @@
-#!/bin/bash
-
-# Import the workspace into JupyterLab
-#jupyter lab workspaces import binder/workspace.json
+panel build panel
+jupyter serverextension enable panel.io.jupyter_server_extension
