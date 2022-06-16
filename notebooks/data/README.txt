@@ -1,1 +1,1 @@
-Folder for temporary data downlaods
+Folder for temporary data downloads
