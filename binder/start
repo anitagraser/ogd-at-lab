@@ -1,3 +1,5 @@
 #!/bin/bash
 export BOKEH_ALLOW_WS_ORIGIN=*
+sleep 3
 jupyter trust notebooks/*.ipynb
+exec "$@"
