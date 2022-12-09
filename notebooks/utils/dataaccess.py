@@ -133,7 +133,7 @@ def get_uber_movement_gdf():
     gdf['MOVEMENT_ID'] = gdf['MOVEMENT_ID'].astype(int)
     gdf.set_index('MOVEMENT_ID', inplace=True)
 
-    file = 'uber_vienna-statistical_areas-2020-1-All-MonthlyAggregate.zip'
+    file = 'data/uber_vienna-statistical_areas-2020-1-All-MonthlyAggregate.zip'
     url = 'https://github.com/anitagraser/ogd-at-lab-data/raw/main/uber/vienna-statistical_areas-2020-1-All-MonthlyAggregate.zip'
     if not exists(file):
         urlretrieve(url, file)
