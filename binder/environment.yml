@@ -16,7 +16,7 @@ dependencies:
   - bokeh
   - proj
   - cartopy
-  - geoviews
+  - geoviews=1.9.6
   - scikit-learn
   - geopy
   - panel
